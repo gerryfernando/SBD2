@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import tubessbd2.Tabel;
+import tubessbd2.Parser;
 /**
  *
  * @author liuslangobelen
@@ -29,7 +30,7 @@ public class TubesSBD2 {
     	System.out.println("    3. Tampilkan Jumlah Blok yang Diakses Untuk Pencarian Record ");
     	System.out.println("    4. Tampilkan QEP dan Cost ");
     	System.out.println("    5. Tampilkan Isi File Shared Pool ");
-    	System.out.println(">> Masukkan Pilihan Anda : ");
+    	System.out.print(">> Masukkan Pilihan Anda : ");
         
         Scanner input = new Scanner(System.in);
         Scanner str = new Scanner(System.in);
@@ -74,7 +75,6 @@ public class TubesSBD2 {
                 System.out.println("    Fan Out Ratio "+tabelii.nama_tabel+" : "+tabelii.Fan(B,tabelii.V,P));
                 System.out.println("    BFR "+tabeliii.nama_tabel+" : "+tabeliii.Bfr(B,tabeliii));
                 System.out.println("    Fan Out Ratio "+tabeliii.nama_tabel+" : "+tabeliii.Fan(B,tabeliii.V,P));
-                System.out.println("Saya"=="saya");
               break;
             case 2:
               // code block
@@ -92,7 +92,6 @@ public class TubesSBD2 {
                 number = input.nextInt();
                 System.out.print("    Nama Tabel : ");
                 String tab = str.nextLine();
-                System.out.println(tab);
                 if(tab.equals(tabeli.nama_tabel)){
                 System.out.println("");
                 System.out.println(">> Menggunakan index, jumlah blok yang diakses : "+tabeli.indexedRecordSearch(number, tabeli.Fan(B,tabeli.V,P)));
@@ -112,9 +111,18 @@ public class TubesSBD2 {
                 System.out.println("> Menu 4 : QEP dan COST");
                 System.out.print("  Masukkan query : ");
                 tab=str.nextLine();
+                Parser query = new Parser(tab);
                 
                 System.out.println("    Output : ");
-                
+                System.out.println("    Tabel : "+query.nama_tabel);
+                System.out.print("    List kolom : ");
+                temp=query.isKondisi(query.data);
+                for(i=0 ;i<query.kolom.length;i++) System.out.print(query.kolom[i]+", ");
+                System.out.println("");
+                for (int j = 0; j < temp.length; j++) {
+                    System.out.println(temp[j]);
+                }
+                System.out.println(temp.length);
               break;
             case 5:
                 
