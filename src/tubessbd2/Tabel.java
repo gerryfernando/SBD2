@@ -14,7 +14,7 @@ import static java.lang.Math.ceil;
 public class Tabel {
         String nama_tabel;
         String[] kolom=new String[10];
-        int R,n,V ;
+        int R,n,V;
        
     public Tabel(String[] tabel){
         this.nama_tabel = tabel[0];
@@ -53,4 +53,25 @@ public class Tabel {
     public int indexedRecordSearch(int input, int fan){
         return (input/fan)+1+1;
     }
+    public boolean cekKolom(String s){
+        int k=0,i=0;
+        System.out.println(s);
+        while(i<this.kolom.length && k==0 && !this.kolom.equals(null)){
+            if(this.kolom[i].equals(s)) k++;
+            i++;
+        }
+        
+        if(k==1) return true;
+        else return false;
+    }
+    public int br(int B){
+        return (this.n/B)+1;
+    }
+    public int gamma(int B,int P){
+        return B/(this.V+P);
+    }
+    public int hi(int B,int P){
+        return (int) (Math.log10(gamma(B,P))/Math.log10(br(B))) +1;
+    }
+    
 }

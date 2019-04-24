@@ -64,7 +64,7 @@ public class TubesSBD2 {
         Tabel tabeli = new Tabel(tabel1);
         Tabel tabelii = new Tabel(tabel2);
         Tabel tabeliii = new Tabel(tabel3);
-
+        
         switch(number) {
             case 1:
               // code block
@@ -112,17 +112,26 @@ public class TubesSBD2 {
                 System.out.print("  Masukkan query : ");
                 tab=str.nextLine();
                 Parser query = new Parser(tab);
-                
-                System.out.println("    Output : ");
-                System.out.println("    Tabel : "+query.nama_tabel);
-                System.out.print("    List kolom : ");
-                temp=query.isKondisi(query.data);
-                for(i=0 ;i<query.kolom.length;i++) System.out.print(query.kolom[i]+", ");
-                System.out.println("");
-                for (int j = 0; j < temp.length; j++) {
-                    System.out.println(temp[j]);
+                Tabel tabs = query.cekTabel(tabeli, tabelii, tabeliii);
+                if(tabs!=null){
+                    tabs.kolom=query.cekKolom(tabs);
+                    if(tabs.kolom!=null){
+                        System.out.println("    Output : ");
+                        System.out.println("    Tabel : "+query.nama_tabel);
+                        System.out.print("    List kolom : ");
+                        temp=query.isKondisi(query.data);
+                        for(i=0 ;i<query.kolom.length;i++) System.out.print(query.kolom[i]+", ");
+                        System.out.println("");
+                        
+                        for (int j = 0; j < temp.length; j++) {
+                            System.out.println(temp[j]);
+                        }
+                        String[] kata=query.QEP1(tabs, temp, B,P );
+                        for (int j = 0; j < 4; j++) {
+                            System.out.println(kata[j]);
+                        }
+                    }
                 }
-                System.out.println(temp.length);
               break;
             case 5:
                 
