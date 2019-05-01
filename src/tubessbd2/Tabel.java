@@ -32,7 +32,6 @@ public class Tabel {
             else if(tabel[i].equals("V")){
                 this.V=Integer.parseInt(tabel[i+1]);
             }
-            
         }
     }
     public int Bfr(int B,Tabel t){
@@ -55,9 +54,8 @@ public class Tabel {
     }
     public boolean cekKolom(String s){
         int k=0,i=0;
-        System.out.println(s);
-        while(i<this.kolom.length && k==0 && !this.kolom.equals(null)){
-            if(this.kolom[i].equals(s)) k++;
+        while(i<this.kolom.length && k==0 && this.kolom[i]!=null){
+            if(this.kolom[i].equals(s)) {k++;}
             i++;
         }
         
@@ -65,7 +63,10 @@ public class Tabel {
         else return false;
     }
     public int br(int B){
-        return (this.n/B)+1;
+        return (n/(B/this.R))+1;
+    }
+    public int bs(int B){
+        return (n/(B/this.R))+1;
     }
     public int gamma(int B,int P){
         return B/(this.V+P);
@@ -73,5 +74,6 @@ public class Tabel {
     public int hi(int B,int P){
         return (int) (Math.log10(gamma(B,P))/Math.log10(br(B))) +1;
     }
+    
     
 }

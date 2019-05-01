@@ -1,0 +1,5 @@
+select id_player,nama_player from player join memiliki using (id_player);
+
+select id_player,nama_player from player where id_player=1;
+
+select * from player join memiliki using (id_player);

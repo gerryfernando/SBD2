@@ -1,0 +1,12 @@
+Query = select id_player,nama_player from player join memiliki using (id_player);
+      PROJECTION id_player, nama_player,  --on the fly-- 
+         JOIN player.id_player = memiliki.id_player -BNLJ
+      player  memiliki
+      Cost(worst case) : 4689 Block Transfer + 3126 Seeks
+--------------------------------------------------------------
+Query = select * from player join memiliki using (id_player);
+      PROJECTION id_player, nama_player, xp_player, id_item,  --on the fly-- 
+         JOIN player.id_player = memiliki.id_player -BNLJ
+      player  memiliki
+      Cost(worst case) : 4689 Block Transfer + 3126 Seeks
+--------------------------------------------------------------

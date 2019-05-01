@@ -8,8 +8,10 @@ package tubessbd2;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import static java.util.Collections.list;
 import tubessbd2.Tabel;
 import tubessbd2.Parser;
 /**
@@ -112,29 +114,64 @@ public class TubesSBD2 {
                 System.out.print("  Masukkan query : ");
                 tab=str.nextLine();
                 Parser query = new Parser(tab);
-                Tabel tabs = query.cekTabel(tabeli, tabelii, tabeliii);
-                if(tabs!=null){
-                    tabs.kolom=query.cekKolom(tabs);
-                    if(tabs.kolom!=null){
-                        System.out.println("    Output : ");
-                        System.out.println("    Tabel : "+query.nama_tabel);
-                        System.out.print("    List kolom : ");
-                        temp=query.isKondisi(query.data);
-                        for(i=0 ;i<query.kolom.length;i++) System.out.print(query.kolom[i]+", ");
-                        System.out.println("");
-                        
-                        for (int j = 0; j < temp.length; j++) {
-                            System.out.println(temp[j]);
+                    Tabel tabs = query.cekTabel1(tabeli, tabelii, tabeliii);
+                    Tabel tabs2 = query.cekTabel2(tabeli, tabelii, tabeliii);
+                    if(tabs!=null && tabs2==null){
+                        tabs.kolom=query.cekKolom(tabs);
+                        if(tabs.kolom!=null){
+                            System.out.println("    Output : ");
+                            System.out.println("    Tabel(1) : "+query.nama_tabel1);
+                            System.out.print("    List kolom : ");
+                            for(i=0 ;i<tabs.kolom.length;i++) if(tabs.kolom[i]!=null){System.out.print(tabs.kolom[i]+", ");}
+                            temp=query.isKondisi(query.data);
+                            System.out.println("");
+                            if(temp!=null){
+                                String[] qep1=query.QEP(tabs, temp, B,P,"QEP1");
+                                for (int j = 0; j < 5; j++) System.out.println(qep1[j]);
+                                String[] qep2=query.QEP(tabs, temp, B, P, "QEP2");
+                                for (int j = 0; j < 5; j++) System.out.println(qep2[j]);
+                                System.out.println("    >>"+query.Optimal1(temp, tabs, B, P,"notjoin"));
+                            }else{
+                                System.out.println("    tidak ada kondisi where");
+                            }
                         }
-                        String[] kata=query.QEP1(tabs, temp, B,P );
-                        for (int j = 0; j < 4; j++) {
-                            System.out.println(kata[j]);
+                    }else if(tabs !=null && tabs2!=null){
+                        temp=query.kolom1;
+                        query.splitKolom(tabs, tabs2, temp);
+                        if(!query.kolom1[0].equals("*")){
+                            tabs.kolom=query.kolom1;
+                            tabs2.kolom=query.kolom2;
                         }
-                    }
+                        if(tabs.kolom!=null && tabs2.kolom!=null){
+                            System.out.println("    Output : ");
+                            System.out.println("    Tabel(1) : "+tabs.nama_tabel);
+                            System.out.print("    List kolom : ");
+                            for(i=0 ;i<tabs.kolom.length;i++) if(tabs.kolom[i]!=null)System.out.print(tabs.kolom[i]+", ");
+                            System.out.println("");
+                            System.out.println("    Tabel(2) : "+tabs2.nama_tabel);
+                            System.out.print("    List kolom : ");
+                            for(i=0 ;i<tabs2.kolom.length;i++) if(tabs2.kolom[i]!=null)System.out.print(tabs2.kolom[i]+", ");
+                            String using=query.using;
+                            System.out.println("");
+                            String[] qep1 = query.qepJoin(tabs, tabs2, query.BNLJ(tabs, tabs2, B), "QEP1",temp);
+                            for (int j = 0; j < 5; j++) System.out.println(qep1[j]);
+                            String[] qep2 = query.qepJoin(tabs2, tabs, query.BNLJ(tabs2,tabs, B), "QEP2",temp);
+                            for (i = 0; i < 5; i++) System.out.println(qep2[i]);
+                            String optimal = query.Optimal2(query.BNLJ(tabs, tabs2, B), query.BNLJ(tabs2,tabs, B));
+                            System.out.println("");
+                            System.out.println("      "+optimal);
+                            if (optimal.equals("QEP Optimal : QEP#1")) {
+                                query.addSharedPool(tab, qep2);
+                            }else if(optimal.equals("QEP Optimal : QEP#2")){
+                                query.addSharedPool(tab, qep1);
+                            }
+                          
+                        }
                 }
               break;
             case 5:
-                
+                Parser p = new Parser("Gerry Kriesna Lius k ");
+                  System.out.println(p.readCSV());
               break;
             default:
                 System.out.println("Masukkan harus sesuai dengan menu yang ada; ");
